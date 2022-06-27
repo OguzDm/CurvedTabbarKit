@@ -20,14 +20,14 @@ public protocol CurvedTabBarItem {
     static var count: ItemCount {get}
 }
 
-struct CurvedTabBarView: View {
+public struct CurvedTabBarView: View {
     
     @Binding var selectedTab: String
     private var tabBarItem: CurvedTabBarItem.Type
     var actionImage: String
     var accentColor: Color
     var action: () -> ()
-    init(selectedTab: Binding<String>, tabBarItem: CurvedTabBarItem.Type, actionImage: String, accentColor: Color, action:@escaping () -> ()) {
+    public init(selectedTab: Binding<String>, tabBarItem: CurvedTabBarItem.Type, actionImage: String, accentColor: Color, action:@escaping () -> ()) {
         UITabBar.appearance().isHidden = true
         self._selectedTab = selectedTab
         self.tabBarItem = tabBarItem
@@ -35,7 +35,7 @@ struct CurvedTabBarView: View {
         self.actionImage = actionImage
         self.accentColor = accentColor
     }
-    var body: some View {
+    public var body: some View {
         
         ZStack(alignment: Alignment(horizontal: .center, vertical: .bottom)) {
             
