@@ -81,7 +81,6 @@ public struct CurvedTabBarView: View {
                     .clipShape(CustomShape())
                     .frame(height: 65)
                     .padding(.horizontal,tabBarItem.count.padding)
-                    .padding(.bottom)
                     
                     Button {
                         action()
@@ -94,8 +93,8 @@ public struct CurvedTabBarView: View {
                                         .font(.system(size: 35))
                                         .foregroundColor(.primary)
                                 )
-                                .offset(y:-30)
                     }
+                    .offset(y:-30)
                 }
             }
         }
