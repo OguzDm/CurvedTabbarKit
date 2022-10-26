@@ -23,17 +23,19 @@ public protocol CurvedTabBarItem {
 public struct CurvedTabBarView: View {
     
     @Binding var selectedTab: String
+    @Binding var showTabBar: Bool
     private var tabBarItem: CurvedTabBarItem.Type
     var actionImage: String
     var accentColor: Color
     var action: () -> ()
-    public init(selectedTab: Binding<String>, tabBarItem: CurvedTabBarItem.Type, actionImage: String, accentColor: Color, action:@escaping () -> ()) {
+    public init(selectedTab: Binding<String>, showTabBar: Binding<Bool>, tabBarItem: CurvedTabBarItem.Type, actionImage: String, accentColor: Color, action:@escaping () -> ()) {
         UITabBar.appearance().isHidden = true
         self._selectedTab = selectedTab
         self.tabBarItem = tabBarItem
         self.action = action
         self.actionImage = actionImage
         self.accentColor = accentColor
+        self._showTabBar = showTabBar
     }
     public var body: some View {
         
@@ -46,52 +48,54 @@ public struct CurvedTabBarView: View {
                 }
             }
             
-            ZStack {
+            if showTabBar {
                 ZStack {
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(.ultraThinMaterial)
-                    HStack(spacing: 25) {
-                        ForEach(tabBarItem.icons.indices.prefix(tabBarItem.count.rawValue),id:\.self) { index in
-                            
-                            if tabBarItem.count.rawValue / 2 == index {
-                                Spacer()
-                                    .frame(width: 80)
-                            }
-                            
-                            Button {
-                                withAnimation {
-                                    selectedTab = tabBarItem.icons[index]
+                    ZStack {
+                            RoundedRectangle(cornerRadius: 20)
+                                .fill(.ultraThinMaterial)
+                        HStack(spacing: 25) {
+                            ForEach(tabBarItem.icons.indices.prefix(tabBarItem.count.rawValue),id:\.self) { index in
+                                
+                                if tabBarItem.count.rawValue / 2 == index {
+                                    Spacer()
+                                        .frame(width: 80)
                                 }
-                            } label: {
-                                VStack {
-                                        Image(systemName: tabBarItem.icons[index])
-                                            .font(.system(size: 27))
-                                            .foregroundColor(.primary)
-                                    Circle()
-                                        .fill(tabBarItem.icons[index] == selectedTab ? accentColor : .clear)
-                                        .frame(width: 5, height: 5)
+                                
+                                Button {
+                                    withAnimation {
+                                        selectedTab = tabBarItem.icons[index]
+                                    }
+                                } label: {
+                                    VStack {
+                                            Image(systemName: tabBarItem.icons[index])
+                                                .font(.system(size: 27))
+                                                .foregroundColor(.primary)
+                                        Circle()
+                                            .fill(tabBarItem.icons[index] == selectedTab ? accentColor : .clear)
+                                            .frame(width: 5, height: 5)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                .clipShape(CustomShape())
-                .frame(height: 65)
-                .padding(.horizontal,tabBarItem.count.padding)
-                .padding(.bottom)
-                
-                Button {
-                    action()
-                } label: {
-                        Circle()
-                            .fill(accentColor.opacity(0.7))
-                            .frame(width: 55, height: 55, alignment: .center)
-                            .overlay(
-                                Image(systemName: actionImage)
-                                    .font(.system(size: 35))
-                                    .foregroundColor(.primary)
-                            )
-                            .offset(y:-30)
+                    .clipShape(CustomShape())
+                    .frame(height: 65)
+                    .padding(.horizontal,tabBarItem.count.padding)
+                    .padding(.bottom)
+                    
+                    Button {
+                        action()
+                    } label: {
+                            Circle()
+                                .fill(accentColor.opacity(0.7))
+                                .frame(width: 55, height: 55, alignment: .center)
+                                .overlay(
+                                    Image(systemName: actionImage)
+                                        .font(.system(size: 35))
+                                        .foregroundColor(.primary)
+                                )
+                                .offset(y:-30)
+                    }
                 }
             }
         }
