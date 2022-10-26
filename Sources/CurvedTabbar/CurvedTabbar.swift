@@ -94,7 +94,7 @@ public struct CurvedTabBarView: View {
                                         .foregroundColor(.primary)
                                 )
                     }
-                    .offset(y:-30)
+                    .offset(y:-25)
                 }
             }
         }
